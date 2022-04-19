@@ -1,0 +1,67 @@
+{% extends 'clientes/base.html' %} 
+
+{% block content %}
+
+<div class="container">
+
+<form method='GET'>
+    <div class='row'>
+        <div class='form-group col-10'>
+            <input type='search' class='form-control' placeholder="Informe o nome do cliente, cpf ou email" name="q" value="{{ request.GET.q }}">
+        </div>
+        <div class='form-group col-2'>
+            <button class='form-control btn-success'>Pesquisar</button
+        </div>
+    </div>
+</form>
+<table class="table table-head">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Cpf</th>
+            <th>Data de Criação</th>
+            <th>Opções</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente.nome }}</td>
+            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.cpf }}</td>
+            <td>{{ cliente.data_criacao|date:"d/m/Y" }}</td>
+            {% if user.is_authenticated %}
+                <td><a href="/editar_cliente/{{ cliente.id }}" class="btn btn-warning">Editar</a></td>
+                <td><a href="/remover_cliente/{{ cliente.id }}" class="btn btn-danger">Ecluir</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if clientes.has_previous %}
+            <a href="?page=1">&laquo; Primeiro</a>
+            <a href="?page={{ clientes.previous_page_number }}&q={% if request.GET.q %}{{ request.GET.q }}{% endif %}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ clientes.number }} até {{ clientes.paginator.num_pages }}.
+        </span>
+
+        {% if clientes.has_next %}
+            <a href="?page={{ clientes.next_page_number }}&q={% if request.GET.q %}{{ request.GET.q }}{% endif %}">Próximo</a>
+            <a href="?page={{ clientes.paginator.num_pages }}">Último &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+
+
+</div>
+
+{% endblock content %}

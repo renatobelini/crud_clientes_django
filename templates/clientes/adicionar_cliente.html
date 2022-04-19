@@ -1,0 +1,10 @@
+{% extends 'clientes/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class=container>
+    <form action= '' method ='POST'>{% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class= "btn btn-block btn-primary" value="Salvar">
+    </form>
+</div>
+{% endblock content %}
